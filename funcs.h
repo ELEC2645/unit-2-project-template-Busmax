@@ -1,9 +1,15 @@
 #ifndef FUNCS_H
 #define FUNCS_H
 
-void menu_item_1(void);
-void menu_item_2(void);
-void menu_item_3(void);
-void menu_item_4(void);
+void resistor_decoder(void);
+void circuit_analyser(void);
+void signal_statistics(void);
+void rc_filter_calc(void);
+void calc_parallel_resistors(void); 
+void generate_waveform_file(void); 
+
+// Helper functions
+float get_float_input(const char* prompt);
+int get_int_input(const char* prompt);
 
 #endif

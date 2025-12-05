@@ -1,37 +1,30 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=21867513)
-# ELEC2645 Unit 2 Project Template
+# Engineering Assistant Toolkit (v6.0)
 
-** PLEASE DELETE THIS README AND REPLACE IT WITH YOUR OWN README.md FILE DESCRIBING YOUR PROJECT **
+## Project Overview
+This project is a Command Line Interface (CLI) application developed in C, designed to assist electrical and electronic engineering students with common calculations and data analysis tasks.
 
+The application utilizes a modular design pattern, separating the user interface logic from the core engineering algorithms. 
 
-This is the basic code for a command line application which you should use for your Unit 2 project.
+## Features
+The toolkit provides a menu-driven interface with the following functionalities:
 
-The code has separated the menu handling code in `main.c` and the function implementations in `funcs.c`. You should add your code to `funcs.c` (or you can create new files if you wish), and update `main.c` to call your functions from the menu.
+1.  **Resistor Colour Code Decoder**: Calculates resistance values based on standard 4-band colour codes, supporting unit scaling (kΩ, MΩ).
+2.  **Circuit Analyser**: Solves for Voltage, Current, or Resistance using Ohm's Law, with built-in protection against division by zero.
+3.  **Signal Statistics**: Calculates the Mean and Root Mean Square (RMS) values for a signal based on user-provided samples.
+4.  **RC Filter Calculator**: Computes the cut-off frequency for a low-pass RC filter given resistance and capacitance values.
+5.  **Parallel Resistor Calculator**: Calculates the equivalent resistance of $N$ resistors in parallel. This feature utilizes **dynamic memory allocation (`malloc`)** to handle a user-defined number of components at runtime.
+6.  **Waveform Generator**: Generates time-domain data for a sine wave based on user parameters (frequency, amplitude, duration) and exports the data to a `.csv` file for external analysis (e.g., in Excel or MATLAB).
 
+## Project Structure
+* **`main.c`**: Contains the main application loop, menu display logic, and high-level program flow control.
+* **`funcs.c`**: Implements the core engineering algorithms, input validation helpers, and mathematical computations.
+* **`funcs.h`**: Header file defining function prototypes and interfaces to ensure modularity.
+* **`Makefile`**: Build script to compile the project and link necessary libraries.
 
-### 1 Run code
+## How to Compile
 
-You can build the code as we have been using in the labs with 
-`gcc main.c funcs.c -o main.out -lm` (the `-lm` is required to link the math library). You can also use `make -B` to force a rebuild using the provided `Makefile`.
+### Prerequisites
+* GCC Compiler
+* Standard C Libraries (including `math.h`)
 
-Then run the code with `./main.out`
-
-
-### 2 The assignment
-
-Please read the assignment brief on the Minerva page for details of what you need to implement. 
-
-
-
-### 3 Test command
-
-The `test.sh` script is provided to check that your code compiles correctly. This is what the autograder will use to check your submission. You can run it with `bash test.sh` or `./test.sh` or just `make test`. 
-
-You do not need to modify this script, but you can look at it to see what it does.
-
-
-### 4 Submit Solution
-
-Use the same method as previous labs to commit and push your code to your GitHub repository for the autograder to check. 
-
-In your final journal post, please include a link to your GitHub repository containing your code  *and* a zip file of your code as an attachment.
+### Enjoy using this version! This is still a beta version; please understand if you encounter any bugs, and please report them to the developers. Thank you for using it!

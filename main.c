@@ -1,141 +1,59 @@
-// ELEC2645 Unit 2 Project Template
-// Command Line Application Menu Handling Code
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
 #include "funcs.h"
 
-/* Prototypes mirroring the C++ version */
-static void main_menu(void);            /* runs in the main loop */
-static void print_main_menu(void);      /* output the main menu description */
-static int  get_user_input(void);       /* get a valid integer menu choice */
-static void select_menu_item(int input);/* run code based on user's choice */
-static void go_back_to_main(void);      /* wait for 'b'/'B' to continue */
-static int  is_integer(const char *s);  /* validate integer string */
-
-int main(void)
-{
-    /* this will run forever until we call exit(0) in select_menu_item() */
-    for(;;) {
-        main_menu();
-    }
-    /* not reached */
-    return 0;
+void print_menu(void) {
+    printf("\n=========================================\n");
+    printf("   ENGINEERING ASSISTANT TOOLKIT (v6.0)  \n");
+    printf("=========================================\n");
+    printf("1. Resistor Colour Decoder\n");
+    printf("2. Circuit Analyser (Ohm's Law)\n");
+    printf("3. Signal Statistics (Mean/RMS)\n");
+    printf("4. RC Filter Calculator\n");
+    printf("5. Parallel Resistor Calc (malloc)\n");
+    printf("6. Waveform Generator (File I/O)\n"); 
+    printf("7. Exit\n");
+    printf("-----------------------------------------\n");
 }
 
-static void main_menu(void)
-{
-    print_main_menu();
-    {
-        int input = get_user_input();
-        select_menu_item(input);
-    }
-}
+int main(void) {
+    int running = 1;
+    int choice;
+    char buffer[100];
 
-static int get_user_input(void)
-{
-    enum { MENU_ITEMS = 5 };   /* 1..4 = items, 5 = Exit */
-    char buf[128];
-    int valid_input = 0;
-    int value = 0;
-
-    do {
-        printf("\nSelect item: ");
-        if (!fgets(buf, sizeof(buf), stdin)) {
-            /* EOF or error; bail out gracefully */
-            puts("\nInput error. Exiting.");
-            exit(1);
-        }
-
-        // strip trailing newline
-        buf[strcspn(buf, "\r\n")] = '\0';
-
-        if (!is_integer(buf)) {
-            printf("Enter an integer!\n");
-            valid_input = 0;
-        } else {
-            value = (int)strtol(buf, NULL, 10);
-            if (value >= 1 && value <= MENU_ITEMS) {
-                valid_input = 1;
-            } else {
-                printf("Invalid menu item!\n");
-                valid_input = 0;
+    while (running) {
+        print_menu();
+        printf("Select an option: ");
+        
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+            if (sscanf(buffer, "%d", &choice) != 1) {
+                printf("Invalid input.\n");
+                continue;
             }
+        } else {
+            break;
         }
-    } while (!valid_input);
 
-    return value;
-}
-
-static void select_menu_item(int input)
-{
-    switch (input) {
-        case 1:
-            menu_item_1();
-            go_back_to_main();
-            break;
-        case 2:
-            menu_item_2();
-            go_back_to_main();
-            break;
-        case 3:
-            menu_item_3();
-            go_back_to_main();
-            break;
-        case 4:
-            menu_item_4();
-            go_back_to_main();
-            break;
-        default:
-            printf("Bye!\n");
-            exit(0);
-    }
-}
-
-static void print_main_menu(void)
-{
-    printf("\n----------- Main menu -----------\n");
-    printf("\n"
-           "\t\t\t\t\t\t\n"
-           "\t1. Menu item 1\t\t\n"
-           "\t2. Menu item 2\t\t\n"
-           "\t3. Menu item 3\t\t\n"
-           "\t4. Menu item 4\t\t\n"
-           "\t5. Exit\t\t\t\t\n"
-           "\t\t\t\t\t\t\n");
-    printf("---------------------------------------------\n");
-}
-
-static void go_back_to_main(void)
-{
-    char buf[64];
-    do {
-        printf("\nEnter 'b' or 'B' to go back to main menu: ");
-        if (!fgets(buf, sizeof(buf), stdin)) {
-            puts("\nInput error. Exiting.");
-            exit(1);
+        switch (choice) {
+            case 1: resistor_decoder();
+             break;
+            case 2: circuit_analyser();
+             break;
+            case 3: signal_statistics();
+             break;
+            case 4: rc_filter_calc();
+             break;
+            case 5: calc_parallel_resistors();
+             break;
+            case 6: generate_waveform_file();
+             break;
+            case 7: 
+                printf("Exiting application.\n");
+                running = 0;
+                break;
+            default:
+                printf("Invalid selection. Try 1-7.\n");
         }
-        buf[strcspn(buf, "\r\n")] = '\0'; /* strip newline */
-    } while (!(buf[0] == 'b' || buf[0] == 'B') || buf[1] != '\0');
-}
-
-/* Return 1 if s is an optional [+/-] followed by one-or-more digits, else 0. */
-static int is_integer(const char *s)
-{
-    if (!s || !*s) return 0;
-
-    /* optional sign */
-    if (*s == '+' || *s == '-') s++;
-
-    /* must have at least one digit */
-    if (!isdigit((unsigned char)*s)) return 0;
-
-    while (*s) {
-        if (!isdigit((unsigned char)*s)) return 0;
-        s++;
     }
-    return 1;
+    return 0;
 }
