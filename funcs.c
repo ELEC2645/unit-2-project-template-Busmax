@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h> // Requires -lm flag for sqrt and pow functions
+#include <math.h>
 #include "funcs.h"
 
 
@@ -140,7 +140,6 @@ void signal_statistics(void) {
         return;
     }
 
-    // Using a static array for simplicity as taught in early units
     float samples[100]; 
     float sum = 0.0;
     float sq_sum = 0.0;
