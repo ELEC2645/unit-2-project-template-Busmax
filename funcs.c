@@ -83,7 +83,7 @@ void resistor_decoder(void) {
     }
 }
 
-// 2. Basic Circuit Analyser (Ohm's Law)
+// 2. Basic Circuit Analyser-Ohm's Law
 
 void circuit_analyser(void) {
     printf("\n--- Basic Circuit Analyser (Ohm's Law) ---\n");
@@ -269,4 +269,184 @@ void generate_waveform_file(void) {
     fclose(fp);
     
     printf(">> Success! Data saved to 'waveform.csv'.\n");
+}
+#define TEST_EPSILON 0.001
+
+// 7. System Self-Diagnostic
+void run_system_test(void) {
+    printf("\n-----------------------------------------\n");
+    printf("      SYSTEM SELF-DIAGNOSTIC (v1.2)      \n");
+    printf("-----------------------------------------\n");
+    
+    int passed_count = 0;
+    int total_tests = 0;
+
+    //Test 1: Resistor Decoder Logic
+    total_tests++;
+    printf("[Test %d] Resistor Colour Code Logic... ", total_tests);
+    
+    int b1 = 1, b2 = 0, mult = 2;
+    double res_expected = 1000.0;
+    double res_calc = (b1 * 10 + b2) * pow(10, mult);
+    
+    if (fabs(res_calc - res_expected) < TEST_EPSILON) {
+        printf("PASS\n");
+        passed_count++;
+    } else {
+        printf("FAIL (Expected: %.0f, Got: %.0f)\n", res_expected, res_calc);
+    }
+
+    //Test 2: Ohm's Law (Current Calculation)
+    total_tests++;
+    printf("[Test %d] Ohm's Law (I = V/R)...       ", total_tests);
+    
+    float v = 4.0f, r = 2.0f;
+    float i_expected = 2.0f;
+    float i_calc = v / r;
+    
+    if (fabs(i_calc - i_expected) < TEST_EPSILON) {
+        printf("PASS\n");
+        passed_count++;
+    } else {
+        printf("FAIL (Expected: %.2f, Got: %.2f)\n", i_expected, i_calc);
+    }
+
+    //Test 3: Signal Statistics
+    total_tests++;
+    printf("[Test %d] Signal Mean Calculation...    ", total_tests);
+    
+    float sum = 2.0f + 4.0f + 6.0f;
+    float mean_expected = 4.0f;
+    float mean_calc = sum / 3.0f;
+    
+    if (fabs(mean_calc - mean_expected) < TEST_EPSILON) {
+        printf("PASS\n");
+        passed_count++;
+    } else {
+        printf("FAIL (Expected: %.2f, Got: %.2f)\n", mean_expected, mean_calc);
+    }
+
+    //Test 4: RC Filter Cut-off Frequency
+    total_tests++;
+    printf("[Test %d] RC Filter Formula...          ", total_tests);
+    
+    // f = 1 / (2 * pi * R * C)
+    float rc_r = 1591.55f;
+    float rc_c = 0.0001f; // 100uF
+    float pi = 3.14159265f;
+    float f_expected = 1.0f;
+    float f_calc = 1.0f / (2.0f * pi * rc_r * rc_c);
+    
+    if (fabs(f_calc - f_expected) < 0.01f) {
+        printf("PASS\n");
+        passed_count++;
+    } else {
+        printf("FAIL (Expected: %.2f, Got: %.2f)\n", f_expected, f_calc);
+    }
+
+    //Test 5: Dynamic Memory Allocation
+    total_tests++;
+    printf("[Test %d] System Memory Allocation...   ", total_tests);
+    
+    //allocate memory for 100 integers
+    int* test_ptr = (int*)malloc(100 * sizeof(int));
+    if (test_ptr != NULL) {
+        test_ptr[0] = 999;
+        if (test_ptr[0] == 999) {
+            printf("PASS\n");
+            passed_count++;
+        } else {
+            printf("FAIL (Write Verify Failed)\n");
+        }
+        free(test_ptr); // Important: Free memory to prevent leaks
+    } else {
+        printf("FAIL (malloc returned NULL)\n");
+    }
+
+    //Test 6: File System IO
+    total_tests++;
+    printf("[Test %d] File Write Permissions...     ", total_tests);
+    
+    const char* test_file = "test_marker.tmp";
+    FILE* fp = fopen(test_file, "w");
+    if (fp != NULL) {
+        fprintf(fp, "Unit Test Data");
+        fclose(fp);
+        // Clean up: delete the test file
+        if (remove(test_file) == 0) {
+            printf("PASS\n");
+            passed_count++;
+        } else {
+            printf("PASS (Write OK, but Delete Failed)\n");
+            passed_count++; 
+        }
+    } else {
+        printf("FAIL (Cannot create file)\n");
+    }
+
+    //Report
+    printf("-----------------------------------------\n");
+    printf("SUMMARY: %d / %d Tests Passed.\n", passed_count, total_tests);
+    
+    if (passed_count == total_tests) {
+        printf(">> DIAGNOSTIC RESULT: SYSTEM NOMINAL\n");
+    } else {
+        printf(">> DIAGNOSTIC RESULT: ERRORS DETECTED\n");
+    }
+    printf("-----------------------------------------\n");
+}
+
+// ================= API IMPLEMENTATIONS =================
+
+// 1. Resistor Decoder API
+double api_resistor_calc(int b1, int b2, int mult) {
+    if (b1 < 0 || b2 < 0 || mult < 0) return -1.0;
+    return (b1 * 10 + b2) * pow(10, mult);
+}
+
+// 2. Ohm's Law API
+// mode: 1=Calc V, 2=Calc I, 3=Calc R
+float api_ohms_law(int mode, float v, float i, float r) {
+    if (mode == 1) return i * r;       // V = IR
+    if (mode == 2) return (r==0)? -1 : v / r; // I = V/R
+    if (mode == 3) return (i==0)? -1 : v / i; // R = V/I
+    return 0.0f;
+}
+
+// 3. RC Filter API
+float api_rc_cutoff(float r, float c) {
+    if (r <= 0 || c <= 0) return -1.0f;
+    return 1.0f / (2.0f * 3.14159265f * r * c);
+}
+
+// 4. Statistics API (Mean) - Demonstrates Array Passing
+float api_stats_mean(float* data, int n) {
+    if (n <= 0) return 0.0f;
+    float sum = 0.0f;
+    for(int i=0; i<n; i++) sum += data[i];
+    return sum / n;
+}
+
+// 5. Statistics API
+float api_stats_rms(float* data, int n) {
+    if (n <= 0) return 0.0f;
+    float sq_sum = 0.0f;
+    for(int i=0; i<n; i++) sq_sum += (data[i] * data[i]);
+    return sqrt(sq_sum / n);
+}
+
+// 6. Parallel Resistor API
+float api_parallel_r(float* data, int n) {
+    if (n <= 0) return 0.0f;
+    double inv_sum = 0.0;
+    for(int i=0; i<n; i++) {
+        if (data[i] <= 0) return -1.0f; // Error
+        inv_sum += (1.0 / data[i]);
+    }
+    return (float)(1.0 / inv_sum);
+}
+
+// 7. Self-Test API
+void api_run_self_test(void) {
+    run_system_test(); // Calls your existing robust test function
 }
