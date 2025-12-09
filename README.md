@@ -1,30 +1,68 @@
-# Engineering Assistant Toolkit (v6.0)
+# Engineering Assistant Toolkit (v7.0)
 
 ## Project Overview
-This project is a Command Line Interface (CLI) application developed in C, designed to assist electrical and electronic engineering students with common calculations and data analysis tasks.
+**Engineering Assistant Toolkit** is a comprehensive software solution designed to assist electrical and electronic engineering students with common calculations and data analysis tasks. 
 
-The application utilizes a modular design pattern, separating the user interface logic from the core engineering algorithms. 
+The project adopts a **Hybrid Programming Architecture**, leveraging the performance and precision of **C** for backend algorithms and the versatility of **Python** for a modern Graphical User Interface (GUI). This approach demonstrates industry-standard practices in software modularity and cross-language interoperability.
 
-## Features
-The toolkit provides a menu-driven interface with the following functionalities:
+## Key Features
 
-1.  **Resistor Colour Code Decoder**: Calculates resistance values based on standard 4-band colour codes, supporting unit scaling (kΩ, MΩ).
-2.  **Circuit Analyser**: Solves for Voltage, Current, or Resistance using Ohm's Law, with built-in protection against division by zero.
-3.  **Signal Statistics**: Calculates the Mean and Root Mean Square (RMS) values for a signal based on user-provided samples.
-4.  **RC Filter Calculator**: Computes the cut-off frequency for a low-pass RC filter given resistance and capacitance values.
-5.  **Parallel Resistor Calculator**: Calculates the equivalent resistance of $N$ resistors in parallel. This feature utilizes **dynamic memory allocation (`malloc`)** to handle a user-defined number of components at runtime.
-6.  **Waveform Generator**: Generates time-domain data for a sine wave based on user parameters (frequency, amplitude, duration) and exports the data to a `.csv` file for external analysis (e.g., in Excel or MATLAB).
+### Core Engineering Modules (C-Backend)
+The application core is built in C for efficiency and robustness, providing the following functionalities:
+
+1.  **Resistor Colour Code Decoder**: Deciphers standard 4-band resistor codes with automatic unit scaling (kΩ, MΩ).
+2.  **Circuit Analyser**: A robust Ohm's Law solver for Voltage, Current, and Resistance, featuring error handling for division by zero.
+3.  **Signal Statistics Engine**: Performs statistical analysis on datasets to calculate Mean and Root Mean Square (RMS) values, essential for signal processing.
+4.  **RC Filter Calculator**: Computes the cut-off frequency for low-pass RC filters.
+5.  **Parallel Resistor Calculator**: Solves for the total resistance of $N$ parallel components using **dynamic memory allocation (`malloc`)**, allowing for runtime-defined circuit complexity.
+6.  **Waveform Generator**: Simulates a signal generator, calculating time-domain sine wave data and exporting it to CSV format for external analysis.
+
+### Advanced Features
+* **System Self-Diagnostic**: An integrated unit-testing module that verifies mathematical logic, memory allocation safety, and file system permissions at runtime.
+* **Hybrid GUI (Python)**: A user-friendly desktop interface built with `tkinter`, which dynamically loads the C library (`.dll`/`.so`) to perform calculations.
+* **Data Visualization**: Integrated plotting using `matplotlib` to visualize generated waveforms directly within the application.
 
 ## Project Structure
-* **`main.c`**: Contains the main application loop, menu display logic, and high-level program flow control.
-* **`funcs.c`**: Implements the core engineering algorithms, input validation helpers, and mathematical computations.
-* **`funcs.h`**: Header file defining function prototypes and interfaces to ensure modularity.
-* **`Makefile`**: Build script to compile the project and link necessary libraries.
+* **`main.c`**: The CLI Presentation Layer. Handles the command-line menu interface and user input validation.
+* **`funcs.c` / `funcs.h`**: The Logic Layer. Contains all engineering algorithms and exposed API functions.
+* **`app.py`**: The GUI Presentation Layer (Python). Interfaces with the compiled C shared library.
+* **`libeng.dll` / `libeng.so`**: The compiled shared object serving as the bridge between C and Python.
+* **`Makefile`**: Automation script for compiling the project.
 
-## How to Compile
+## Installation & Usage Guide
 
 ### Prerequisites
-* GCC Compiler
-* Standard C Libraries (including `math.h`)
+* GCC Compiler (MinGW for Windows, or standard GCC for Linux/Mac).
+* Python 3.x with `matplotlib` and `numpy` installed.
 
+### Option 1: Command Line Interface (CLI)
+To run the traditional text-based interface:
+
+1.  Compile the project:
+    ```bash
+    make
+    # OR manually: gcc main.c funcs.c -o main.out -lm
+    ```
+2.  Run the executable:
+    ```bash
+    ./main.out
+    ```
+
+### Option 2: Graphical User Interface (GUI)
+To experience the modern desktop application:
+
+1.  Compile the C code into a shared library:
+    * **Windows**: `gcc -shared -o libeng.dll funcs.c -fPIC -lm`
+
+2.  Run the Python app:
+    ```bash
+    python app.py
+    ```
+
+## Testing
+A shell script `test.sh` is provided for automated build verification. Additionally, the application includes a built-in **Self-Diagnostic** tool (Option 7 in CLI) to validate internal logic.
+
+## References
+* Standard C Library documentation.
+* *ELEC2645 Unit 2 Application Ideas* 
 ### Enjoy using this version! This is still a beta version; please understand if you encounter any bugs, and please report them to the developers. Thank you for using it!
