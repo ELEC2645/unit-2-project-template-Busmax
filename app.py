@@ -52,7 +52,7 @@ class EngApp:
 
         header = tk.Frame(root, bg="#003366", pady=10)
         header.pack(fill="x")
-        tk.Label(header, text="Engineering Toolkit v3.0", font=("Helvetica", 18, "bold"), fg="white", bg="#003366").pack()
+        tk.Label(header, text="Engineering Toolkit v7.0", font=("Helvetica", 18, "bold"), fg="white", bg="#03B11A").pack()
         tk.Label(header, text="Powered by C Logic Engine", font=("Arial", 10), fg="#cccccc", bg="#003366").pack()
 
   
@@ -71,10 +71,10 @@ class EngApp:
         bottom_frame = tk.Frame(root, pady=10)
         bottom_frame.pack(fill="x")
         
-        btn_check = tk.Button(bottom_frame, text="🛠️ Run System Self-Diagnostic", command=self.run_self_check, bg="#ffcc00", width=25)
+        btn_check = tk.Button(bottom_frame, text="Run System Self-Diagnostic", command=self.run_self_check, bg="#a6ff00", width=25)
         btn_check.pack(side="left", padx=20)
         
-        btn_exit = tk.Button(bottom_frame, text="❌ Exit Application", command=root.quit, bg="#ff6666", width=20)
+        btn_exit = tk.Button(bottom_frame, text="Exit Application", command=root.quit, bg="#ff9666", width=20)
         btn_exit.pack(side="right", padx=20)
 
     def to_c_array(self, py_list):
